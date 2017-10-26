@@ -8,17 +8,27 @@
   },
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "https://*/*"
   ],
   "content_scripts": [
     {
       "matches": [
         "https://sociotime.ru/index.php*"
       ],
-      "js": ["jquery.js", "content.js"]
+      "js": ["jquery.js", "contentz.js"],
+      "css": ["chromeext.css"]
     }
   ],
+  "web_accessible_resources": [
+    "injected.js"
+  ],
   "browser_action": {
-    "name": "sociotime"
+    "name": "sociotime",
+    "default_icon": {
+      "16": "/images/icon16.png",
+      "24": "/images/icon24.png",
+      "32": "/images/icon32.png"
+    }
   }
 }
