@@ -19,6 +19,11 @@ $(document).ready(function() {
 
         var audio = new Audio('http://princezze.free.fr/sounds/Opbeep.wav');
         var str = '';
+        var html = '';
+        var maxwidth = $('#leftdiv').outerWidth();
+        $('#leftdiv').on('resize', function() {
+          maxwidth = $('#leftdiv').outerWidth();
+        })
         audio.loop = false;
         $('#leftdiv').bind('DOMNodeInserted', function(event) {
           chrome.storage.sync.get(null, function (myresults) {
@@ -29,6 +34,8 @@ $(document).ready(function() {
             $( "#leftdiv div" ).last().hide().show(800);
             if(myresults.pm){
               str = $( "#leftdiv div" ).last().text();
+              html = $( "#leftdiv div" ).last().html();
+              if(/<img/.test(html)) $( "#leftdiv div" ).last().children().find( "img" ).addClass("img-responsive").wrap( "<div style='max-width:"+maxwidth+"px'></div>" );
               var regex = new RegExp(myresults.name, "gi");
               if(regex.test(str)){
                 if(!$('#myownlog').length){
@@ -42,8 +49,10 @@ $(document).ready(function() {
                 // console.log(str);
                 if(myresults.sound) audio.play();
               }
-              $( "#leftdiv img" ).hide();
-              $( "#leftdiv canvas" ).parent().parent().html("");
+              if(myresults.sound){
+                $( "#leftdiv img" ).hide();
+                $( "#leftdiv canvas" ).parent().parent().html("");
+              }
             }
             while ($( "#leftdiv div" ).length > 200){
               $( "#leftdiv div" ).first().remove(500);

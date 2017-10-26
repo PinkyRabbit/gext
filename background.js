@@ -13,8 +13,8 @@ chrome.browserAction.onClicked.addListener(function (tab){
         chrome.browserAction.setIcon({ path:
           {
             "16": "/images/disable16.png",
-            "24": "/images/disable24.png",
-            "32": "/images/disable32.png"
+            "48": "/images/disable48.png",
+            "128": "/images/disable128.png"
           }
         });
         chrome.browserAction.setTitle({ title: 'Расширение отключено'});
@@ -28,8 +28,8 @@ chrome.browserAction.onClicked.addListener(function (tab){
         chrome.browserAction.setIcon({ path:
           {
             "16": "/images/icon16.png",
-            "24": "/images/icon24.png",
-            "32": "/images/icon32.png"
+            "48": "/images/icon48.png",
+            "128": "/images/icon128.png"
           }
         });
         chrome.browserAction.setTitle({ title: 'sociotime' });
