@@ -14,9 +14,11 @@ $(document).ready(function() {
     if (event.data.type && (event.data.type == "FROM_CHROME_EXT")) {
 
       // basic settings
+      if(!$('#myownlog').length) $( "#privatdiv" ).after( '<div id="myownlog"></div>' );
       var audio = new Audio('http://princezze.free.fr/sounds/Opbeep.wav');
       var str = '';
       var html = '';
+      var oldhtml = '';
       var maxwidth = $('#leftdiv').outerWidth();
       var maxhei = $('#main_box').outerHeight()/3;
       $('#leftdiv').on('resize', function() {
@@ -28,7 +30,7 @@ $(document).ready(function() {
       // fix images before start
       $( "#leftdiv div" ).children().find("img").each(function() {
         var src = $(this).attr("src").substring(0, 5);
-        if(src !== '/img/') $(this).addClass("img-responsive").wrap( "<span style='max-width:"+maxwidth+"px;max-height="+maxhei+"px'></span>" );
+        if(src !== '/img/') $(this).addClass("img-responsive").wrap( "<span style='max-width:"+maxwidth+"px;max-height:"+maxhei+"px'></span>" );
       })
       $( "#leftdiv div" ).html(function(){
         return $(this).html().replace(/<br>/g," ");
@@ -48,149 +50,100 @@ $(document).ready(function() {
 
         // создаём экземпляр MutationObserver
         var observer = new MutationObserver(function(mutations) {
-          var current = $( "#leftdiv div" ).last();
-          console.log(current);
-          mutations.forEach(function(mutation) {
-            console.log(mutation.type);
-          });
-        });
 
-        // конфигурация нашего observer:
-        var config = {
-          childList: true
-        };
-
-        // передаём в качестве аргументов целевой элемент и его конфигурацию
-        observer.observe(target, config);
-
-        // позже можно остановить наблюдение
-        // observer.disconnect();
-
-
-        // start messages cycle
-        /*
-        $('#leftdiv').on('DOMNodeInserted', function(event) {
           chrome.storage.local.get(null, function (myresults) {
             //pick next line
             var current = $( "#leftdiv div" ).last();
 
             html = current.html();
-
+            // console.log(current);
             if(html!==myresults.lastmsg){
+
+              //remove br
               current.html(function(){
                 return $(this).html().replace(/<br>/g," ").replace(/\s{2,}/g," ");
               });
+
+              // wrap image
+              if(/<img/g.test(html)){
+                current.children().find("img").each(function() {
+                  var src = $(this).attr("src").substring(0, 5);
+                  var src2 = $(this).attr("src").substring(0, 15);
+                  if(src !== '/img/' && src2 !=='img/statusIcons' && !$(this).hasClass( "img-responsive" )) $(this).addClass("img-responsive").wrap( "<span style='max-width:"+maxwidth+"px;max-height:"+maxhei+"px'></span>" );
+                })
+              }
+
+              oldhtml = current.html();
+              // if we hide images
+              if(myresults.logNimg && /<img/g.test(html)){
+                current.children().find('img').each(function( index ) {
+                  var urlimg = $(this).attr('src');
+                  var src = urlimg.substring(0, 5);
+                  var src2 = urlimg.substring(0, 15);
+                  if(src !== '/img/' && src2 !=='img/statusIcons'){
+                    $(this).replaceWith('<span class="ext-showimg" data-extimg='+urlimg+'><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Показать изображение</span>');
+                  }
+                });
+                current.children().find('.ext-showimg').each(function( index ) {
+                  $(this).on('click', function() {
+                    var urlimg = $(this).data('extimg');
+                    $(this).replaceWith('<span style="max-width:'+maxwidth+'px;max-height:'+maxhei+'px"><img src="'+urlimg+'" border="0" class="img-responsive"></span>');
+                  });
+                });
+              }
+
+              html = current.html();
               chrome.storage.local.set({'lastmsg': html}, function() {
 
+                // test text on nick
+                str = current.text();
+                var regex = new RegExp(myresults.name, "gi");
+                if(regex.test(str)){
+
+                  // if we have sound
+                  if(myresults.sound) audio.play();
+
+                  // if we have log
+                  console.log(myresults.logNimg);
+                  if(myresults.logNimg){
+                    oldhtml = oldhtml.replace(/<font.*?>/gi," ").replace(/\s{2,}/g," ");
+                    $('#myownlog').append('<div class="js-killlog">'+oldhtml+'</div>');
+                    $('#myownlog div').last().hide().show(200);
+                    $('.js-killlog').on('click', function(e) {
+                      $(this).hide(500);
+                      var that = this;
+                      setTimeout(function(){that.remove()}, 500);
+                    });
+                  }
+                }
                 console.log(JSON.stringify(myresults));
               });
 
             }else console.log('Одинаковое!!');
-
             // DEBUG LOG
             // console.log(JSON.stringify(myresults));
-        });});
-        */
-      });
-    }
-  }, false);
-});
-/*
-
-
-        $('#leftdiv').bind('DOMNodeInserted', function(event) {
-          chrome.storage.local.get(null, function (myresults) {
-
-            alert(JSON.stringify(myresults));
-            alert('STATE '+myresults.state);
-            if(myresults.pm) alert('ON ALL');
-            if(myresults.sound) alert('ON SOUND');
-
-            // $( "#leftdiv div" ).last().hide().show(800);
-
-            // save new string
-            var current = $( "#leftdiv div" ).last();
-
-            // remove br
-            current.html(function(){
-              return $(this).html().replace(/<br>/g," ");
-            });
-
-            // wrap image
-            if(/<img/g.test(html)){
-              current.children().find("img").each(function() {
-                var src = $(this).attr("src").substring(0, 5);
-                if(src !== '/img/' && !$(this).hasClass( "img-responsive" )) $(this).addClass("img-responsive").wrap( "<span style='max-width:"+maxwidth+"px;max-height="+maxhei+"px'></span>" );
-              })
-            }
-
-            html = current.html();
-
-            //protection from doubles
-            if(myresults.lastmsg!=html)
-              chrome.storage.local.set({'lastmsg': html}, function() {
-                console.log(myresults.lastmsg+"\n=============="+html);
-                // slow shows last message
-
-
-                /*
-
-
-                // create one more block if hasnt
-                if(!$('#myownlog').length) $( "#privatdiv" ).after( '<div id="myownlog"></div>' );
-                // test text and save if needed
-                str = current.text();
-                var regex = new RegExp(myresults.name, "gi");
-                if(regex.test(str)){
-                  $('#myownlog').append('<div class="js-killlog">'+str+'</div>');
-                  $('#myownlog div').last().hide().show(200);
-                  $('.js-killlog').on('click', function(e) {
-                    $(this).hide(500);
-                  });
-                  // console.log(str);
-                  audio.play();
-
-                }
-
-              });
-
-            if(myresults.pm){
-
-              if(myresults.sound){
-                str = $( "#leftdiv div" ).last().text();
-                var regex = new RegExp(myresults.name, "gi");
-                if(regex.test(str)){
-                  $('#myownlog').append('<div class="js-killlog">'+str+'</div>');
-                  $('#myownlog div').last().hide().show(200);
-                  $('.js-killlog').on('click', function(e) {
-                    $(this).hide(500);
-                  });
-                  // console.log(str);
-                  audio.play();
-                }
-              }
-              //hide images
-              if(/<img/.test(html)){
-                // alert(current.children('img'));
-                current.children('img').replaceWith(function(){
-                  var urlimg = $(this).attr('src');
-                  return '<span class="ext-showimg" data='+urlimg+'>🖼 Показать изображение</span>';
-                });
-              }
-
-              $( "#leftdiv canvas" ).parent().parent().html("");
-            }
-
-            while ($( "#leftdiv div" ).length > 200){
-              $( "#leftdiv div" ).first().remove(500);
-            }
           });
+
+
+          /*
+          FOR MUTATION DEBUG
+
+          mutations.forEach(function(mutation) {
+            console.log(mutation.type);
+          });
+          */
         });
+
+        observer.observe(target, {childList: true});
+
+        // позже можно остановить наблюдение
+        // observer.disconnect();
+
       });
     }
   }, false);
 });
-*/
+
 function regexEscape(str) {
   return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
 }

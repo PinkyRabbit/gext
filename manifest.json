@@ -14,7 +14,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://sociotime.ru/index.php*"
+        "https://sociotime.ru/index.php",
+        "https://sociotime.ru/index.php#"
       ],
       "js": ["jquery.js", "contentz.js"],
       "css": ["chromeext.css"]
