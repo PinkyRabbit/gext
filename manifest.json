@@ -1,7 +1,7 @@
 {
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
-  "version": "0.3",
+  "version": "0.4",
   "default_locale": "ru",
   "background": {
     "scripts": ["background.js"]
