@@ -108,7 +108,7 @@ $(document).ready(function() {
                   // if we have log
                   // console.log(myresults.logNimg);
                   if(myresults.logNimg){
-                    oldhtml = oldhtml.replace(/<font.*?>/gi," ").replace(/\s{2,}/g," ");
+                    oldhtml = oldhtml.replace(/<font.*?>/gi,"").replace(/\s{2,}/g," ");
                     $('#myownlog').append('<div class="js-killlog">'+oldhtml+'</div>');
                     $('#myownlog div').last().hide().show(200);
                     $('.js-killlog').on('click', function(e) {
