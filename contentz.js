@@ -104,7 +104,7 @@ $(document).ready(function() {
                   if(myresults.sound) audio.play();
 
                   // if we have log
-                  console.log(myresults.logNimg);
+                  // console.log(myresults.logNimg);
                   if(myresults.logNimg){
                     oldhtml = oldhtml.replace(/<font.*?>/gi," ").replace(/\s{2,}/g," ");
                     $('#myownlog').append('<div class="js-killlog">'+oldhtml+'</div>');
@@ -116,7 +116,12 @@ $(document).ready(function() {
                     });
                   }
                 }
-                console.log(JSON.stringify(myresults));
+
+                // remove all >200
+                while($( "#leftdiv div" ).length > 200){
+                  $( "#leftdiv div" ).first().remove(500);
+                }
+                // console.log(JSON.stringify(myresults));
               });
 
             }else console.log('Одинаковое!!');
