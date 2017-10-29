@@ -69,7 +69,8 @@ $(document).ready(function() {
                 current.children().find("img").each(function() {
                   var src = $(this).attr("src").substring(0, 5);
                   var src2 = $(this).attr("src").substring(0, 15);
-                  if(src !== '/img/' && src2 !=='img/statusIcons' && !$(this).hasClass( "img-responsive" )) $(this).addClass("img-responsive").wrap( "<span style='max-width:"+maxwidth+"px;max-height:"+maxhei+"px'></span>" );
+                  var src3 = $(this).attr("src").substring(7, 17);
+                  if(src !== '/img/' && src2 !=='img/statusIcons' && src3 !=='mpchat.com' && !$(this).hasClass( "img-responsive" )) $(this).addClass("img-responsive").wrap( "<span style='max-width:"+maxwidth+"px;max-height:"+maxhei+"px'></span>" );
                 })
               }
 
@@ -80,7 +81,8 @@ $(document).ready(function() {
                   var urlimg = $(this).attr('src');
                   var src = urlimg.substring(0, 5);
                   var src2 = urlimg.substring(0, 15);
-                  if(src !== '/img/' && src2 !=='img/statusIcons'){
+                  var src3 = urlimg.substring(7, 17);
+                  if(src !== '/img/' && src2 !=='img/statusIcons' && src3 !=='mpchat.com' ){
                     $(this).replaceWith('<span class="ext-showimg" data-extimg='+urlimg+'><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Показать изображение</span>');
                   }
                 });

@@ -6,6 +6,11 @@
   padding: 2px 10px;
   cursor: pointer;
 }
+.js-killlog a,
+.js-killlog a:hover{
+  color: #fffd5b;
+  text-transform: capitalize;
+}
 .ext-showimg{
   text-decoration: underline;
   cursor: pointer;
