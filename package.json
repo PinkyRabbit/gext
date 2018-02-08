@@ -1,0 +1,31 @@
+{
+    "name": "chrome-ext-chat",
+    "version": "1.0.0",
+    "description": "extention for costumisation chat in google chrome",
+    "main": "background.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PinkyRabbit/gext.git"
+    },
+    "keywords": [
+        "google",
+        "chrome",
+        "extantion"
+    ],
+    "author": "Mikita Melnikau",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/PinkyRabbit/gext/issues"
+    },
+    "homepage": "https://github.com/PinkyRabbit/gext#readme",
+    "devDependencies": {
+        "chai": "*",
+        "eslint": "^4.9.0",
+        "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-plugin-import": "^2.7.0",
+        "mocha": "*"
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Atom Material Theme",
+  "files.eol": "\n",
+  "editor.renderControlCharacters": true,
+  "editor.tabSize": 2
+}
